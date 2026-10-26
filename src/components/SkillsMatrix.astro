@@ -1,0 +1,87 @@
+---
+// Skill × project table. A dot means the project lists that skill.
+// Columns show just the project number (under a "Project" corner label) so eleven columns fit without scrolling.
+import { CATS, PROJECTS, SKILLS, projectName } from '../data/portfolio';
+import { catColor } from '../styles/ui';
+
+const head = 'sticky top-0 border-b border-line bg-surface text-center font-semibold text-muted';
+const headCell = `${head} px-2.5 py-2 text-[12px]`;
+const catCell = `${head} px-1 py-1.5 text-[11px] tracking-[.05em] uppercase`;
+const cell = 'border-b border-line px-2.5 py-2 text-center';
+const sep = 'border-l border-line';
+// A border separates each project category.
+const startsCat = (i: number) => i > 0 && PROJECTS[i].cat !== PROJECTS[i - 1].cat;
+const cats = CATS.map((c) => ({ ...c, n: PROJECTS.filter((p) => p.cat === c.key).length })).filter((c) => c.n);
+---
+
+<div class="overflow-x-auto rounded-[10px] border border-line bg-surface">
+	<table class="w-full min-w-[640px] border-collapse font-sans text-[13.5px]/[normal]">
+		<thead>
+			<tr>
+				<th class={catCell}></th>
+				{
+					cats.map((c, ci) => (
+						<th colspan={c.n} class:list={[catCell, ci > 0 && sep]}>
+							<span class:list={['block rounded py-[3px]', catColor[c.key]]}>{c.name}</span>
+						</th>
+					))
+				}
+				<th class={catCell}></th>
+			</tr>
+			<tr>
+				<th class:list={[headCell, 'text-left']}>Project</th>
+				{
+					PROJECTS.map((p, i) => (
+						<th class:list={[headCell, startsCat(i) && sep]}>
+							<a
+								href={`#${p.id}`}
+								title={`${projectName(p.id)}: ${p.title}`}
+								aria-label={projectName(p.id)}
+								class="text-muted no-underline hover:text-accent"
+							>
+								{p.id.slice(1)}
+							</a>
+						</th>
+					))
+				}
+				<th class={headCell}>Used in</th>
+			</tr>
+		</thead>
+		<tbody>
+			{
+				SKILLS.map(([group, skills]) => (
+					<>
+						<tr>
+							<th
+								colspan={PROJECTS.length + 2}
+								class="border-b border-line bg-ph px-2.5 py-2 text-left text-[11.5px] font-semibold tracking-[.05em] text-muted uppercase"
+							>
+								{group}
+							</th>
+						</tr>
+						{skills.map(([key, label]) => {
+							const used = PROJECTS.map((p) => p.skills.includes(key));
+							return (
+								<tr id={`skill-${key}`} class="scroll-mt-4 hover:bg-accent-soft target:bg-accent-soft">
+									<th scope="row" class="border-b border-line px-2.5 py-2 text-left font-medium whitespace-nowrap">
+										{label}
+									</th>
+									{PROJECTS.map((p, i) => (
+										<td class:list={[cell, startsCat(i) && sep]}>
+											{used[i] && (
+												<a href={`#${p.id}`} aria-label={`${label} in ${projectName(p.id)}`}>
+													<span class="inline-block size-[11px] rounded-full bg-accent" />
+												</a>
+											)}
+										</td>
+									))}
+									<td class={`${cell} text-[12px] text-muted`}>{used.filter(Boolean).length}</td>
+								</tr>
+							);
+						})}
+					</>
+				))
+			}
+		</tbody>
+	</table>
+</div>

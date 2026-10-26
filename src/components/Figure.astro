@@ -1,0 +1,58 @@
+---
+// One figure: an image (click to zoom), a looping video, or a dashed placeholder. The caption is the slot.
+import { withBase } from '../lib/url';
+
+interface Props {
+	src?: string;
+	alt?: string;
+	/** Crop to fill the frame instead of fitting inside it. */
+	photo?: boolean;
+	/** Certificates use a 4:3 frame. */
+	cert?: boolean;
+	video?: string;
+	poster?: string;
+	label?: string;
+	placeholder?: string;
+}
+
+const { src, alt, photo, cert, video, poster, label, placeholder } = Astro.props;
+const frame = 'block w-full rounded-lg border border-line bg-white';
+---
+
+<figure>
+	{
+		video ? (
+			<video
+				src={withBase(video)}
+				poster={poster && withBase(poster)}
+				muted
+				loop
+				playsinline
+				autoplay
+				preload="metadata"
+				aria-label={label}
+				class:list={[frame, 'aspect-[16/10] object-contain']}
+			/>
+		) : placeholder ? (
+			<div class="grid aspect-[16/10] place-items-center rounded-lg border-[1.5px] border-dashed border-line bg-ph p-3.5 text-center font-sans text-[12.5px]/[1.45] text-muted">
+				<span class="mb-1 block font-semibold text-ink opacity-70">＋ Figure to add</span>
+				{placeholder}
+			</div>
+		) : (
+			<img
+				src={src && withBase(src)}
+				alt={alt}
+				loading="lazy"
+				class:list={[
+					frame,
+					'cursor-zoom-in',
+					cert ? 'aspect-[4/3]' : 'aspect-[16/10]',
+					photo ? 'object-cover' : 'object-contain',
+				]}
+			/>
+		)
+	}
+	<figcaption class="mt-[7px] font-sans text-[13px]/[1.45] text-muted [&_b]:font-semibold [&_b]:text-ink">
+		<slot />
+	</figcaption>
+</figure>

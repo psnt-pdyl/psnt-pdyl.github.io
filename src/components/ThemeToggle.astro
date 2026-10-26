@@ -1,0 +1,63 @@
+---
+// Icon button that cycles the colour theme: system → light → dark.
+// "System" follows the OS setting; light and dark are saved in localStorage and set data-theme on <html>.
+// Pair with <ThemeInit /> in <head> so a saved choice applies before first paint.
+import { Monitor, Moon, Sun } from '@lucide/astro';
+
+interface Props {
+	class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<button
+	type="button"
+	data-theme-toggle
+	data-mode="system"
+	aria-label="Theme: System (switch to Light)"
+	title="Theme: System (switch to Light)"
+	class:list={[
+		'group grid size-8 cursor-pointer place-items-center rounded-md border border-line bg-surface text-muted hover:border-accent hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
+		className,
+	]}
+>
+	<Monitor size={16} aria-hidden="true" class="hidden group-data-[mode=system]:block" />
+	<Sun size={16} aria-hidden="true" class="hidden group-data-[mode=light]:block" />
+	<Moon size={16} aria-hidden="true" class="hidden group-data-[mode=dark]:block" />
+</button>
+
+<script>
+	const MODES = ['system', 'light', 'dark'] as const;
+	type Mode = (typeof MODES)[number];
+	const LABEL: Record<Mode, string> = { system: 'System', light: 'Light', dark: 'Dark' };
+	const root = document.documentElement;
+
+	const current = (): Mode => (root.dataset.theme === 'light' || root.dataset.theme === 'dark' ? root.dataset.theme : 'system');
+	const nextOf = (m: Mode) => MODES[(MODES.indexOf(m) + 1) % MODES.length];
+
+	function render() {
+		const mode = current();
+		const label = `Theme: ${LABEL[mode]} (switch to ${LABEL[nextOf(mode)]})`;
+		for (const b of document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]')) {
+			b.dataset.mode = mode;
+			b.setAttribute('aria-label', label);
+			b.title = label;
+		}
+	}
+
+	function setMode(mode: Mode) {
+		if (mode === 'system') delete root.dataset.theme;
+		else root.dataset.theme = mode;
+		try {
+			if (mode === 'system') localStorage.removeItem('theme');
+			else localStorage.setItem('theme', mode);
+		} catch {}
+		render();
+	}
+
+	document.addEventListener('click', (e) => {
+		if ((e.target as Element).closest('[data-theme-toggle]')) setMode(nextOf(current()));
+	});
+	render();
+</script>

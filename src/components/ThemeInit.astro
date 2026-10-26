@@ -1,0 +1,10 @@
+---
+// Applies the saved theme before first paint. Put it in <head> on any page that uses <ThemeToggle />.
+---
+
+<script is:inline>
+	try {
+		var saved = localStorage.getItem('theme');
+		if (saved === 'light' || saved === 'dark') document.documentElement.dataset.theme = saved;
+	} catch (e) {}
+</script>

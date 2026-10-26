@@ -1,0 +1,59 @@
+---
+import { ArrowRight } from '@lucide/astro';
+import { projectName, skillLabel, type Project } from '../data/portfolio';
+import { withBase } from '../lib/url';
+import { skillTag } from '../styles/ui';
+
+interface Props {
+	project: Project;
+}
+
+const { project: p } = Astro.props;
+const meta = p.meta.split(' · ').slice(0, 2).join(' · ');
+// Show the first two skills; the rest are summarised as "+N".
+const MAX_TAGS = 2;
+const shown = p.skills.slice(0, MAX_TAGS);
+const more = p.skills.length - shown.length;
+---
+
+<button
+	type="button"
+	data-tile={p.id}
+	class="group flex cursor-pointer flex-col overflow-hidden rounded-xl border border-line bg-surface p-0 text-left transition-[translate,box-shadow,border-color] duration-150 ease-[ease] hover:-translate-y-[3px] hover:border-accent hover:shadow-[0_10px_24px_rgba(0,0,0,.10)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+>
+	{
+		p.cover ? (
+			<div class="aspect-[16/10] overflow-hidden border-b border-line bg-white">
+				<img
+					src={withBase(p.cover)}
+					alt=""
+					loading="lazy"
+					class:list={[
+						'block h-full w-full transition-[scale] duration-300 ease-[ease] group-hover:scale-[1.04]',
+						p.fit === 'contain' ? 'object-contain p-1.5' : 'object-cover',
+					]}
+				/>
+			</div>
+		) : (
+			<div class="grid aspect-[16/10] place-items-center overflow-hidden border-b border-line bg-linear-135 from-accent-soft to-ph font-serif text-[34px]/[normal] font-bold text-accent">
+				{projectName(p.id)}
+			</div>
+		)
+	}
+	<div class="flex flex-1 flex-col gap-1 px-3.5 pt-3 pb-3.5">
+		<div class="font-serif text-[16.5px]/[1.3] font-semibold">{p.title}</div>
+		<div class="font-sans text-[12.5px]/[1.4] text-muted">{meta}</div>
+		<div class="my-1 flex flex-wrap gap-1.5">
+			{shown.map((k) => <span class={skillTag}>{skillLabel[k] ?? k}</span>)}
+			{more > 0 && (
+				<span class={skillTag} title={p.skills.slice(MAX_TAGS).map((k) => skillLabel[k] ?? k).join(', ')}>
+					+{more}
+				</span>
+			)}
+		</div>
+		<span class="mt-auto inline-flex items-center gap-1 pt-1.5 font-sans text-[12.5px]/[normal] font-medium text-accent">
+			View project
+			<ArrowRight size={14} aria-hidden="true" class="transition-[translate] duration-150 group-hover:translate-x-0.5" />
+		</span>
+	</div>
+</button>

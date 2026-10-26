@@ -1,0 +1,17 @@
+---
+import { catName, type CatKey } from '../data/portfolio';
+import { catColor } from '../styles/ui';
+
+interface Props {
+	cat: CatKey;
+}
+
+const { cat } = Astro.props;
+---
+
+<span
+	class:list={[
+		'mr-2 rounded-[5px] px-2 py-0.5 font-sans text-[11px]/[normal] font-semibold tracking-[.05em] uppercase',
+		catColor[cat],
+	]}>{catName[cat]}</span
+>

@@ -1,0 +1,20 @@
+---
+import { lead as leadClass } from '../styles/ui';
+
+interface Props {
+	id: string;
+	title: string;
+	lead?: string;
+}
+
+const { id, title, lead } = Astro.props;
+---
+
+<section
+	id={id}
+	class="scroll-mt-4 pt-2 pb-10 not-first-of-type:border-t not-first-of-type:border-line not-first-of-type:pt-9"
+>
+	<h2 class="mt-0 mb-1.5 font-serif text-[24px]/[1.25] font-bold">{title}</h2>
+	{lead && <p class={leadClass}>{lead}</p>}
+	<slot />
+</section>

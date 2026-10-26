@@ -1,0 +1,17 @@
+---
+// Grid of figures. Four figures sit two by two on wide screens.
+interface Props {
+	count?: number;
+	one?: boolean;
+	class?: string;
+}
+
+const { count, one, class: className } = Astro.props;
+const cols = one
+	? 'grid-cols-1'
+	: count === 4
+		? 'grid-cols-[repeat(auto-fit,minmax(260px,1fr))] lg:grid-cols-2'
+		: 'grid-cols-[repeat(auto-fit,minmax(220px,1fr))]';
+---
+
+<div class:list={['my-[18px] grid gap-3.5', cols, className]}><slot /></div>

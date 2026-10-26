@@ -1,0 +1,64 @@
+@import 'tailwindcss';
+
+/* Colour tokens. Swapped for dark mode by the OS setting or the theme button (data-theme on <html>). */
+:root {
+	--bg: #fbfaf7;
+	--surface: #ffffff;
+	--ink: #1c1e21;
+	--muted: #5f646b;
+	--line: #e4e1da;
+	--accent: #1d4f91;
+	--accent-soft: #e6eef8;
+	--ok: #1f6f4a;
+	--ok-soft: #e1f1e8;
+	--warn: #8a5a00;
+	--warn-soft: #f8eed9;
+	--ph: #f3f1ec;
+}
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme='light']) {
+		--bg: #131518; --surface: #1b1e22; --ink: #e9e8e4; --muted: #a3a8ae; --line: #2d3137;
+		--accent: #8db6ee; --accent-soft: #1d2a3b; --ok: #79c99c; --ok-soft: #18291f; --warn: #e2b55c; --warn-soft: #2e2615; --ph: #202328;
+	}
+}
+:root[data-theme='dark'] {
+	--bg: #131518; --surface: #1b1e22; --ink: #e9e8e4; --muted: #a3a8ae; --line: #2d3137;
+	--accent: #8db6ee; --accent-soft: #1d2a3b; --ok: #79c99c; --ok-soft: #18291f; --warn: #e2b55c; --warn-soft: #2e2615; --ph: #202328;
+}
+
+@theme inline {
+	--color-bg: var(--bg);
+	--color-surface: var(--surface);
+	--color-ink: var(--ink);
+	--color-muted: var(--muted);
+	--color-line: var(--line);
+	--color-accent: var(--accent);
+	--color-accent-soft: var(--accent-soft);
+	--color-ok: var(--ok);
+	--color-ok-soft: var(--ok-soft);
+	--color-warn: var(--warn);
+	--color-warn-soft: var(--warn-soft);
+	--color-ph: var(--ph);
+}
+
+@theme {
+	--font-serif: 'Source Serif 4', Georgia, serif;
+	--font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+
+	/* The original design is desktop-first with breakpoints at 900px and 560px. */
+	--breakpoint-*: initial;
+	--breakpoint-sm: 561px;
+	--breakpoint-lg: 901px;
+}
+
+@layer base {
+	body {
+		@apply m-0 bg-bg font-serif text-[17px] leading-[1.65] text-ink;
+	}
+	a {
+		@apply text-accent underline decoration-1 underline-offset-[3px];
+	}
+	p {
+		@apply mt-0 mb-3.5;
+	}
+}

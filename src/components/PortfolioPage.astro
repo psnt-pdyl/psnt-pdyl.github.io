@@ -1,0 +1,252 @@
+---
+import '../styles/global.css';
+import Certificate from './Certificate.astro';
+import Cv from './Cv.astro';
+import CvItem from './CvItem.astro';
+import Figs from './Figs.astro';
+import Figure from './Figure.astro';
+import Lnk from './Lnk.astro';
+import ProjectFilters from './ProjectFilters.astro';
+import ProjectLink from './ProjectLink.astro';
+import ProjectLinks from './ProjectLinks.astro';
+import ProjectModal from './ProjectModal.astro';
+import ProjectTile from './ProjectTile.astro';
+import Section from './Section.astro';
+import Sidebar from './Sidebar.astro';
+import SkillsMatrix from './SkillsMatrix.astro';
+import ThemeInit from './ThemeInit.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { CATS, CERTIFICATES, PROJECTS, PUBLICATIONS, type CatKey } from '../data/portfolio';
+import { lead, row, small } from '../styles/ui';
+import { linkAttrs } from '../lib/url';
+
+const interests = [
+	'Electricity demand forecasting',
+	'Physics-informed ML',
+	'Power-system planning',
+	'Energy storage',
+	'Energy transition & policy',
+];
+
+interface Props {
+	/** Project tab to select. Set on the /projects routes; the home page defaults to Academic. */
+	cat?: CatKey | 'all';
+}
+
+const { cat } = Astro.props;
+const DEFAULT_CAT: CatKey | 'all' = cat ?? 'academic';
+// Certificates with a scan are shown as figures; the rest as a list.
+const scanned = CERTIFICATES.filter((c) => c.src);
+const listed = CERTIFICATES.filter((c) => !c.src);
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{SITE_TITLE}</title>
+		<meta name="description" content={SITE_DESCRIPTION} />
+		<meta name="generator" content={Astro.generator} />
+		<link rel="sitemap" href="/sitemap-index.xml" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600&display=swap"
+			rel="stylesheet"
+		/>
+		<ThemeInit />
+	</head>
+	<body>
+		<div class="mx-auto grid max-w-[1180px] grid-cols-1 px-4 sm:px-5 lg:grid-cols-[260px_1fr] lg:gap-14 lg:px-7">
+			<Sidebar />
+
+			<main class="min-w-0 pt-6 pb-20 lg:pt-12">
+				<Section id="about" title="About">
+					<p>
+						I build physics-informed deep-learning models for national electricity demand. My M.Sc. thesis forecast
+						how electric cooking and electric vehicles will change Nepal's <em>hourly</em> grid load, and showed that
+						the grid will face many evenings close to its limit rather than one rare extreme. Before research I worked
+						as a mechanical engineer, designing and installing turbine-pump systems in the field.
+					</p>
+					<p>
+						Next, I want to move from predicting the evening peak to deciding how a power system should meet it:
+						optimal power-system planning, energy storage and value stacking.
+					</p>
+					<div class="mt-1 flex flex-wrap gap-2">
+						{
+							interests.map((s) => (
+								<span class="rounded-md bg-accent-soft px-2.5 py-1 font-sans text-[13px]/[normal] font-medium text-accent">
+									{s}
+								</span>
+							))
+						}
+					</div>
+				</Section>
+
+				<Section id="education" title="Education">
+					<Cv>
+						<CvItem when="2024 – 2026">
+							<b>M.Sc. Renewable Energy Engineering</b>, Pulchowk Campus, Institute of Engineering, Tribhuvan University
+							<small class={small}>
+								Thesis: Impact assessment of electric cooking and electric mobility on grid demand: a scenario-based
+								hourly load forecasting study · supervised by Asst. Prof. Sanjaya Neupane · external examiner from WECS
+							</small>
+							<small class:list={[small, 'mt-1']}>
+								Coursework: Operational Research · Research Methodology · Mini-Grids Planning &amp; Design · Renewable
+								Energy Technology
+							</small>
+							<ProjectLinks ids={['p1']}>
+								<Lnk href="https://hdl.handle.net/20.500.14540/26855">View thesis</Lnk>
+							</ProjectLinks>
+						</CvItem>
+						<CvItem when="2018 – 2023">
+							<b>B.E. Mechanical Engineering</b>, Pulchowk Campus, Institute of Engineering, Tribhuvan University
+							<small class={small}>
+								Final-year project: helical Bach-type Savonius wind turbine for water pumping, published 2025
+							</small>
+							<small class:list={[small, 'mt-1']}>
+								Coursework: Thermodynamics · Heat Transfer · Fluid Mechanics · Energy Audit · Finite Element Method ·
+								Numerical Methods · Electric Machines · Renewable Energy
+							</small>
+							<ProjectLinks ids={['p2']} />
+						</CvItem>
+					</Cv>
+				</Section>
+
+				<Section id="experience" title="Experience">
+					<Cv>
+						<CvItem when="Dec 2024 – Present">
+							<b>Innovative Assistant Researcher</b>, Nepal Academy of Science and Technology (NAST), Government of Nepal
+							<small class={small}>
+								Physics-informed deep-learning pipeline for national grid load forecasting on Load Dispatch Center data;
+								net-zero demand–generation study; petrol-to-electric jeep conversion
+							</small>
+							<ProjectLinks ids={['p1', 'p4', 'p5']} />
+						</CvItem>
+						<CvItem when="Sep 2023 – May 2024">
+							<b>Mechanical Engineer</b>, aQysta
+							<small class={small}>
+								Integrated turbine-pump systems from 2D/3D design through manufacture and on-site installation; R&amp;D
+								on a higher-power version
+							</small>
+							<ProjectLinks ids={['p6']} />
+						</CvItem>
+						<CvItem when="Apr – Jun 2022">
+							<b>HVAC Design Intern</b>, C-Zone HVAC Inc.
+							<small class={small}>
+								Complete hotel HVAC design, from load calculation to ASHRAE equipment selection and AutoCAD layouts
+							</small>
+							<ProjectLinks ids={['p7']} />
+						</CvItem>
+					</Cv>
+				</Section>
+
+				<Section id="publications" title="Publications" lead="Five peer-reviewed works.">
+					<ol class="m-0 list-decimal pl-[22px]">
+						{
+							PUBLICATIONS.map((pub) => (
+								<li id={pub.id} class="mb-4 pl-1.5">
+									<Fragment set:html={pub.authors} />{' '}<span class="font-semibold">{pub.title}</span>{' '}<span class="text-muted italic">{pub.venue}</span>{pub.rest}{pub.accepted && <>{' '}<span class="ml-1 rounded-[5px] bg-ok-soft px-2 py-0.5 font-sans text-[11.5px]/[normal] font-medium whitespace-nowrap text-ok">accepted</span></>}
+									<div class:list={[row, 'mt-1.5']}>
+										{pub.project && <ProjectLink id={pub.project} />}
+										{pub.links.map((l) => (
+											<Lnk href={l.href}>{l.label}</Lnk>
+										))}
+									</div>
+								</li>
+							))
+						}
+					</ol>
+				</Section>
+
+				<Section
+					id="projects"
+					title="Projects"
+					lead="Each project shows its figures, results and links, and the skills and software it used."
+				>
+					<ProjectFilters defaultCat={DEFAULT_CAT} onRoute={cat !== undefined} />
+					<p id="empty" hidden class="font-sans text-[14px]/[normal] text-muted">
+						No projects of this type use the selected skills.
+					</p>
+
+					{
+						CATS.map((c) => (
+							<div data-group hidden={DEFAULT_CAT !== 'all' && c.key !== DEFAULT_CAT}>
+								<div class="mt-[30px] mb-3 font-sans text-[13px]/[normal] font-semibold tracking-[.05em] text-muted uppercase">
+									{c.group}
+								</div>
+								<div class="mb-2 grid grid-cols-[repeat(auto-fill,minmax(230px,1fr))] gap-4">
+									{PROJECTS.filter((p) => p.cat === c.key).map((p) => (
+										<ProjectTile project={p} />
+									))}
+								</div>
+							</div>
+						))
+					}
+				</Section>
+
+				<Section
+					id="skills"
+					title="Skills & software"
+					lead="Where each skill and tool was used. Click a project to see its figures and results."
+				>
+					<SkillsMatrix />
+					<p class="mt-3.5 font-sans text-[14px]/[normal] text-muted">
+						<b>Also trained in:</b> TensorFlow · HOMER Pro, energy audit, solar PV feasibility and mini-grid design (<a
+							href="#training">see certificates</a
+						>) · technical teaching (small-hydropower design workshop, 2025).
+					</p>
+				</Section>
+
+				<Section id="teaching" title="Teaching & service">
+					<Figs one class="max-w-[520px]">
+						<Figure
+							photo
+							src="img/workshop-2025.jpg"
+							alt="Classroom of engineering students during a training session"
+						>
+							<b>Small Hydropower Design Workshop</b>, March 2025.
+						</Figure>
+					</Figs>
+					<Cv>
+						<CvItem when="2025">Organiser and trainer, Small Hydropower Design Workshop for final-year engineering students</CvItem>
+						<CvItem when="2022">Mentor, SolidWorks and ANSYS workshops and design competitions</CvItem>
+						<CvItem when="2021">Event supervisor and technical manager, ZENIX Physics–Mathematics Olympiad</CvItem>
+					</Cv>
+				</Section>
+
+				<Section id="training" title="Certificates">
+					<Figs>
+						{scanned.map((c) => <Certificate title={c.title} issuer={c.issuer} src={c.src!} alt={c.alt ?? c.title} />)}
+					</Figs>
+					<Cv class="mt-3">
+						{listed.map((c) => <CvItem when={c.issuer}>{c.title}</CvItem>)}
+					</Cv>
+				</Section>
+
+				<footer class="border-t border-line pt-5 font-sans text-[13px]/[normal] text-muted">
+					© 2026 Prashant Paudyal Sharma · Lalitpur, Nepal
+				</footer>
+			</main>
+		</div>
+
+		<div
+			id="lb"
+			role="dialog"
+			aria-label="Figure"
+			class="fixed inset-0 z-50 hidden cursor-zoom-out place-items-center bg-black/85 p-6 data-open:grid"
+		>
+			<div>
+				<img alt="" class="max-h-[88vh] max-w-full rounded-md bg-white" />
+				<p class="mx-auto mt-3 mb-0 max-w-[800px] text-center font-sans text-[14px]/[normal] text-[#ddd]"></p>
+			</div>
+		</div>
+
+		<ProjectModal />
+
+		<script>
+			import '../scripts/portfolio';
+		</script>
+	</body>
+</html>

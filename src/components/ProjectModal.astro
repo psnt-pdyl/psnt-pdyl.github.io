@@ -1,0 +1,35 @@
+---
+// Pop-up that shows one project at a time. Opened and closed by src/scripts/portfolio.ts.
+import { PROJECTS } from '../data/portfolio';
+import ProjectDetail from './ProjectDetail.astro';
+
+const navButton =
+	'cursor-pointer rounded-[7px] border border-line bg-surface px-3 py-[7px] font-sans text-[13px]/[normal] font-medium text-ink hover:border-accent hover:text-accent disabled:invisible';
+---
+
+<div
+	id="pm"
+	role="dialog"
+	aria-modal="true"
+	class="fixed inset-0 z-40 hidden flex-col overflow-y-auto bg-[rgba(12,14,17,.62)] px-2 py-3 backdrop-blur-md data-open:flex sm:px-4 sm:py-9"
+>
+	<!-- my-auto centres a short project vertically; a tall one starts at the top and scrolls. -->
+	<div
+		class="relative mx-auto my-auto w-full max-w-[1200px] rounded-[14px] bg-bg px-4 py-5 shadow-[0_20px_60px_rgba(0,0,0,.3)] sm:px-[30px] sm:pt-[26px] sm:pb-6"
+	>
+		<button
+			type="button"
+			data-close
+			aria-label="Close"
+			class="sticky top-0 z-2 float-right -mt-2 -mr-3 ml-3 size-9 cursor-pointer rounded-full border border-line bg-surface font-sans text-[18px]/[normal] text-ink hover:border-accent hover:text-accent"
+			>✕</button
+		>
+		<div>
+			{PROJECTS.map((p) => <ProjectDetail project={p} />)}
+		</div>
+		<div class="mt-[18px] flex justify-between gap-2.5 border-t border-line pt-3.5">
+			<button type="button" data-d="-1" class={navButton}>← Previous project</button>
+			<button type="button" data-d="1" class={navButton}>Next project →</button>
+		</div>
+	</div>
+</div>

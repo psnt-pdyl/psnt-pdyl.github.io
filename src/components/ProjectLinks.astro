@@ -1,0 +1,17 @@
+---
+// Row of pill links under a CV entry: any extra links (slot) first, then one pill per related project.
+import { row } from '../styles/ui';
+import ProjectLink from './ProjectLink.astro';
+
+interface Props {
+	/** Project ids, e.g. ['p1', 'p4']. */
+	ids: string[];
+}
+
+const { ids } = Astro.props;
+---
+
+<div class:list={[row, 'mt-1.5']}>
+	<slot />
+	{ids.map((id) => <ProjectLink id={id} />)}
+</div>

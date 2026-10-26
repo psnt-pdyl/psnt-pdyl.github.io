@@ -1,0 +1,12 @@
+---
+// /projects/academic, /projects/non-academic, /projects/other: the same page with that project tab selected.
+import type { GetStaticPaths } from 'astro';
+import PortfolioPage from '../../components/PortfolioPage.astro';
+import { CATS } from '../../data/portfolio';
+
+export const getStaticPaths = (() => CATS.map((c) => ({ params: { cat: c.slug }, props: { key: c.key } }))) satisfies GetStaticPaths;
+
+const { key } = Astro.props;
+---
+
+<PortfolioPage cat={key} />

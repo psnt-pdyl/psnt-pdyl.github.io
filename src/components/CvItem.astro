@@ -1,0 +1,10 @@
+---
+interface Props {
+	when: string;
+}
+
+const { when } = Astro.props;
+---
+
+<div class="font-sans text-[13.5px]/[1.4] text-muted sm:leading-[1.9]">{when}</div>
+<div class="mb-3.5"><slot /></div>

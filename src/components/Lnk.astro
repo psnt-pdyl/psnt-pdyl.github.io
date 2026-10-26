@@ -1,0 +1,25 @@
+---
+// A pill link. Without `href` it is shown as a dashed "to add" placeholder.
+// Links that leave the page (other sites, PDFs) open in a new tab; in-page #links stay in this tab.
+import { linkAttrs } from '../lib/url';
+
+interface Props {
+	href?: string;
+}
+
+const { href } = Astro.props;
+const base = 'inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 font-sans text-[12.5px]/[normal] font-medium no-underline';
+---
+
+{
+	href ? (
+		<a {...linkAttrs(href)} class:list={[base, 'bg-accent-soft text-accent hover:underline']}>
+			<slot />
+		</a>
+	) : (
+		<span class:list={[base, 'border border-dashed border-line bg-transparent text-muted']}>
+			<slot />
+			<span class="opacity-80">· to add</span>
+		</span>
+	)
+}

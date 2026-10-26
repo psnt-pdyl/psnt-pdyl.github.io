@@ -1,0 +1,12 @@
+---
+// Two-column "when / what" list used for education, experience, teaching and certificates.
+interface Props {
+	class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class:list={['grid grid-cols-1 text-[16px] sm:grid-cols-[130px_1fr] sm:gap-x-5 sm:gap-y-1.5', className]}>
+	<slot />
+</div>

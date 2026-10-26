@@ -1,0 +1,17 @@
+---
+// A certificate scan with its title and issuer. Click the image to zoom. Place inside <Figs>.
+import Figure from './Figure.astro';
+
+interface Props {
+	title: string;
+	issuer: string;
+	src: string;
+	alt: string;
+}
+
+const { title, issuer, src, alt } = Astro.props;
+---
+
+<Figure cert src={src} alt={alt}>
+	<b>{title}</b><br />{issuer}
+</Figure>

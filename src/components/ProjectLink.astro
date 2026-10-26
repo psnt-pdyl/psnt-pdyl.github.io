@@ -1,0 +1,39 @@
+---
+// "Project N" pill that opens the project pop-up. On hover or keyboard focus a small preview card
+// shows the project's cover as a fixed square thumbnail (left) and its title (right, up to three lines, then an ellipsis).
+import { PROJECTS, projectName } from '../data/portfolio';
+import { withBase } from '../lib/url';
+import Lnk from './Lnk.astro';
+
+interface Props {
+	/** Project id, e.g. 'p1'. */
+	id: string;
+}
+
+const { id } = Astro.props;
+const p = PROJECTS.find((x) => x.id === id)!;
+---
+
+<span class="group/preview relative inline-flex">
+	<Lnk href={`#${id}`}>{projectName(id)}<span class="sr-only">: {p.title}</span></Lnk>
+	<span
+		aria-hidden="true"
+		class="pointer-events-none invisible absolute top-full left-0 z-30 mt-1.5 flex w-max max-w-[min(20rem,calc(100vw-2rem))] items-center gap-2.5 rounded-md border border-line bg-surface p-1.5 opacity-0 shadow-[0_8px_20px_rgba(0,0,0,.12)] transition-[opacity,visibility] duration-150 group-focus-within/preview:visible group-focus-within/preview:opacity-100 group-hover/preview:visible group-hover/preview:opacity-100"
+	>
+		{
+			p.cover ? (
+				<img
+					src={withBase(p.cover)}
+					alt=""
+					loading="lazy"
+					class="size-12 flex-none rounded-sm border border-line bg-white object-cover"
+				/>
+			) : (
+				<span class="grid size-12 flex-none place-items-center rounded-sm bg-linear-135 from-accent-soft to-ph font-serif text-[14px]/[normal] font-bold text-accent">
+					{id.slice(1)}
+				</span>
+			)
+		}
+		<span class="line-clamp-3 min-w-0 font-sans text-[13px]/[1.35] font-medium text-muted">{p.title}</span>
+	</span>
+</span>

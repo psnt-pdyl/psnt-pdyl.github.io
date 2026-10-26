@@ -1,0 +1,83 @@
+---
+import { Download, Mail } from '@lucide/astro';
+import { linkAttrs } from '../lib/url';
+import GithubIcon from './GithubIcon.astro';
+import ThemeToggle from './ThemeToggle.astro';
+
+const toc = [
+	['about', 'About'],
+	['education', 'Education'],
+	['experience', 'Experience'],
+	['publications', 'Publications'],
+	['projects', 'Projects'],
+	['skills', 'Skills & software'],
+	['teaching', 'Teaching & service'],
+	['training', 'Certificates'],
+];
+const email = 'paudyalprashant98@gmail.com';
+const github = 'psnt-pdyl';
+// On narrow screens the sidebar becomes a header: avatar beside the name, everything else full width.
+const full = 'col-span-full justify-self-start';
+const button = 'inline-flex h-[30px] items-center rounded-md border no-underline transition-colors';
+---
+
+<aside
+	class="grid grid-cols-[84px_1fr] gap-x-[18px] pt-8 pb-2 font-sans text-[14px] [scrollbar-width:thin] lg:sticky lg:top-0 lg:block lg:max-h-screen lg:self-start lg:overflow-y-auto lg:py-12"
+>
+	<div
+		class="row-span-3 mb-[18px] grid size-[84px] place-items-center overflow-hidden rounded-full bg-accent-soft font-serif text-[28px]/[normal] font-semibold text-accent lg:size-28 lg:text-[38px]"
+		aria-hidden="true"
+	>
+		PS
+	</div>
+	<h1 class="mt-0 mb-1.5 font-serif text-[26px]/[1.2] font-bold">Prashant Paudyal Sharma</h1>
+	<p class="mt-0 mb-1 font-medium">Energy Systems &amp; AI-for-Energy Researcher</p>
+	<p class="mt-0 mb-[18px] text-muted">
+		M.Sc. Renewable Energy Engineering<br />Pulchowk Campus, Tribhuvan University<br />Lalitpur, Nepal
+	</p>
+	<span class:list={[full, 'mb-5 inline-block rounded-md bg-ok-soft px-2.5 py-1 text-[12.5px] font-medium text-ok']}>
+		Seeking PhD positions, 2027
+	</span>
+	<a
+		{...linkAttrs(`mailto:${email}`)}
+		class:list={[full, 'mb-3 inline-flex items-center gap-2 text-ink no-underline hover:text-accent']}
+	>
+		<Mail size={15} aria-hidden="true" class="text-muted" />
+		{email}
+	</a>
+	<div class:list={[full, 'mb-[22px] flex items-center gap-2']}>
+		<a
+			{...linkAttrs('CV_Prashant.pdf')}
+			download="Prashant_Paudyal_Sharma_CV.pdf"
+			class:list={[
+				button,
+				// Inverted colours: dark on the light theme, light on the dark theme.
+				'gap-1.5 border-ink bg-ink px-2.5 text-[12.5px]/[normal] font-medium text-bg hover:opacity-85',
+			]}
+		>
+			<Download size={14} aria-hidden="true" />
+			Download CV
+		</a>
+		<a
+			{...linkAttrs(`https://github.com/${github}`)}
+			aria-label={`GitHub: ${github}`}
+			title={`GitHub: ${github}`}
+			class:list={[button, 'w-[30px] justify-center border-line bg-surface text-ink hover:border-accent hover:text-accent']}
+		>
+			<GithubIcon size={15} />
+		</a>
+	</div>
+	<nav
+		id="toc"
+		class="col-span-full grid grid-flow-col gap-4 overflow-x-auto border-t border-line pt-4 pb-1.5 whitespace-nowrap lg:grid-flow-row lg:gap-1.5 lg:overflow-visible lg:pb-0 lg:whitespace-normal"
+	>
+		{
+			toc.map(([id, label]) => (
+				<a href={`#${id}`} class="text-muted no-underline hover:text-accent aria-[current=location]:text-accent">
+					{label}
+				</a>
+			))
+		}
+	</nav>
+	<ThemeToggle class:list={[full, 'mt-[18px]']} />
+</aside>

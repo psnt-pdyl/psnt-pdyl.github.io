@@ -1,0 +1,109 @@
+---
+// Project type tabs and a skill dropdown on one row, with the active skill filters as dismissible chips below.
+// Behaviour lives in src/scripts/portfolio.ts.
+import { ChevronDown, ListFilter, X } from '@lucide/astro';
+import { CATS, PROJECTS, SKILLS, type CatKey } from '../data/portfolio';
+import { pill } from '../styles/ui';
+import { withBase } from '../lib/url';
+
+interface Props {
+	/** Tab selected on page load. */
+	defaultCat?: CatKey | 'all';
+	/** True on a /projects route: the page opens scrolled to the projects. */
+	onRoute?: boolean;
+}
+
+const { defaultCat = 'academic', onRoute = false } = Astro.props;
+// Each tab has its own URL; clicking a tab updates the address bar without reloading.
+const tabs = [{ key: 'all', name: 'All', n: PROJECTS.length, href: withBase('projects') }].concat(
+	CATS.map((c) => ({
+		key: c.key,
+		name: c.name,
+		n: PROJECTS.filter((p) => p.cat === c.key).length,
+		href: withBase(`projects/${c.slug}`),
+	})),
+);
+// Only methods that some project uses are offered as filters.
+const options = SKILLS[0][1].filter(([k]) => PROJECTS.some((p) => p.skills.includes(k)));
+---
+
+<div class="mb-4 flex flex-wrap items-center gap-3">
+	<div
+		id="tabs"
+		role="tablist"
+		data-default={defaultCat}
+		data-on-route={onRoute ? '' : undefined}
+		aria-label="Project type"
+		class="flex w-fit max-w-full flex-wrap gap-1 rounded-[10px] border border-line bg-ph p-1"
+	>
+		{
+			tabs.map((t) => (
+				<button
+					type="button"
+					role="tab"
+					aria-selected={t.key === defaultCat ? 'true' : 'false'}
+					data-cat={t.key}
+					data-href={t.href}
+					class="cursor-pointer rounded-[7px] border-0 bg-transparent px-3.5 py-[7px] font-sans text-[14px]/[normal] font-medium text-muted aria-selected:bg-surface aria-selected:text-ink aria-selected:shadow-[0_1px_2px_rgba(0,0,0,.08)]"
+				>
+					{t.name}
+					<span class="ml-1.5 text-[12px] opacity-70">{t.n}</span>
+				</button>
+			))
+		}
+	</div>
+
+	<details id="skill-menu" class="group relative ml-auto">
+		<summary
+			class="inline-flex cursor-pointer list-none items-center gap-2 rounded-[10px] border border-line bg-ph px-3.5 py-[11px] font-sans text-[14px]/[normal] font-medium text-muted select-none hover:text-ink group-open:bg-surface group-open:text-ink [&::-webkit-details-marker]:hidden"
+		>
+			<ListFilter size={15} aria-hidden="true" />
+			Filter
+			<span
+				data-count
+				hidden
+				class="inline-grid h-[18px] min-w-[18px] place-items-center rounded-full bg-muted px-1 text-[11px]/[normal] text-bg"
+			></span>
+			<ChevronDown size={15} aria-hidden="true" class="transition-[rotate] duration-150 group-open:rotate-180" />
+		</summary>
+		<div
+			class="absolute right-0 z-10 mt-2 max-h-80 w-72 max-w-[calc(100vw-2rem)] overflow-y-auto rounded-[10px] border border-line bg-surface p-1.5 shadow-[0_10px_24px_rgba(0,0,0,.10)]"
+		>
+			{
+				options.map(([key, label]) => (
+					<label class="flex cursor-pointer items-center gap-2.5 rounded-md px-2.5 py-1.5 font-sans text-[13px]/[normal] text-ink hover:bg-ph">
+						<input type="checkbox" value={key} class="size-3.5 cursor-pointer accent-accent" />
+						{label}
+					</label>
+				))
+			}
+		</div>
+	</details>
+</div>
+
+<div id="active-filters" hidden class="mb-[22px] flex flex-wrap items-center gap-1.5">
+	{
+		options.map(([key, label]) => (
+			<button
+				type="button"
+				data-remove={key}
+				hidden
+				aria-label={`Remove filter: ${label}`}
+				class:list={[
+					pill,
+					'inline-flex cursor-pointer items-center gap-1 py-1 pr-2 pl-2.5 text-[12.5px]/[normal] text-ink hover:border-accent hover:text-accent',
+				]}
+			>
+				{label}
+				<X size={13} aria-hidden="true" />
+			</button>
+		))
+	}
+	<button
+		type="button"
+		data-clear
+		class="ml-1 cursor-pointer font-sans text-[12.5px]/[normal] text-muted underline underline-offset-[3px] hover:text-accent"
+	>
+		Clear all
+	</button>
+</div>

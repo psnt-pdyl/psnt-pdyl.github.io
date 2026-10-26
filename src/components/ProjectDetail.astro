@@ -1,0 +1,86 @@
+---
+import { isSoftware, projectName, skillLabel, type Project } from '../data/portfolio';
+import { row } from '../styles/ui';
+import CatTag from './CatTag.astro';
+import Figs from './Figs.astro';
+import Figure from './Figure.astro';
+import Lnk from './Lnk.astro';
+
+interface Props {
+	project: Project;
+}
+
+const { project: p } = Astro.props;
+const key = 'pt-2 text-muted sm:pt-1';
+---
+
+<article
+	id={p.id}
+	data-project
+	data-cat={p.cat}
+	data-skills={p.skills.join(' ')}
+	class="hidden data-open:block"
+>
+	<div class="flex flex-col-reverse items-baseline justify-between gap-1.5 pr-9 sm:flex-row sm:gap-4">
+		<h3 class="m-0 font-serif text-[20px]/[1.35] font-semibold">{p.title}</h3>
+		<span class="flex-none font-sans text-[12px]/[normal] font-semibold tracking-[.04em] text-muted">
+			<CatTag cat={p.cat} />{projectName(p.id)}
+		</span>
+	</div>
+	<div class="mt-1 mb-3.5 font-sans text-[13.5px]/[normal] text-muted">{p.meta}</div>
+	<p class="text-[16.5px]">{p.description}</p>
+
+	<Figs count={p.figures.length}>
+		{
+			p.figures.map((fig, i) => (
+				<Figure {...fig}>
+					<b>Fig. {i + 1}.</b> {fig.caption}
+				</Figure>
+			))
+		}
+	</Figs>
+
+	{
+		p.results && (
+			<div class="mt-4 mb-[18px] grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-3">
+				{p.results.map((r) => (
+					<div class="border-l-[3px] border-accent py-0.5 pl-3">
+						<b class="block font-serif text-[21px]/[1.2] font-bold" set:html={r.value} />
+						<span class="font-sans text-[12.5px]/[1.4] text-muted">{r.label}</span>
+					</div>
+				))}
+			</div>
+		)
+	}
+
+	<div
+		class="grid grid-cols-1 items-start gap-1 border-t border-line pt-4 font-sans text-[13px]/[normal] sm:grid-cols-[92px_1fr] sm:gap-x-3 sm:gap-y-2.5"
+	>
+		{
+			p.links && (
+				<>
+					<span class={key}>Links</span>
+					<div class={row}>
+						{p.links.map((l) => <Lnk href={l.href}>{l.label}</Lnk>)}
+					</div>
+				</>
+			)
+		}
+		<span class={key}>Skills used</span>
+		<div class={row}>
+			{
+				p.skills.map((k) => (
+					<a
+						href={`#skill-${k}`}
+						class:list={[
+							'rounded-full border border-line px-[9px] py-[3px] font-sans text-[12.5px]/[normal] font-medium text-ink no-underline hover:border-accent hover:text-accent',
+							isSoftware[k] ? 'bg-ph' : 'bg-surface',
+						]}
+					>
+						{skillLabel[k] ?? k}
+					</a>
+				))
+			}
+		</div>
+	</div>
+</article>

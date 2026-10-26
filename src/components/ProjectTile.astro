@@ -1,7 +1,8 @@
 ---
 import { ArrowRight } from '@lucide/astro';
 import { projectName, skillLabel, type Project } from '../data/portfolio';
-import { withBase } from '../lib/url';
+import { Image } from 'astro:assets';
+import { image } from '../lib/images';
 import { skillTag } from '../styles/ui';
 
 interface Props {
@@ -24,9 +25,11 @@ const more = p.skills.length - shown.length;
 	{
 		p.cover ? (
 			<div class="aspect-[16/10] overflow-hidden border-b border-line bg-white">
-				<img
-					src={withBase(p.cover)}
+				<Image
+					src={image(p.cover)}
 					alt=""
+					widths={[320, 640]}
+					sizes="(min-width: 901px) 280px, 100vw"
 					loading="lazy"
 					class:list={[
 						'block h-full w-full transition-[scale] duration-300 ease-[ease] group-hover:scale-[1.04]',

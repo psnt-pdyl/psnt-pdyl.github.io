@@ -188,7 +188,7 @@ const lbCap = lb.querySelector('p')!;
 document.addEventListener('click', (e) => {
 	const img = (e.target as Element).closest<HTMLImageElement>('figure img');
 	if (img) {
-		lbImg.src = img.src;
+		lbImg.src = img.dataset.full ?? img.src;
 		lbCap.textContent = img.parentElement!.querySelector('figcaption')?.textContent?.trim() ?? '';
 		lb.toggleAttribute('data-open', true);
 	} else if ((e.target as Element).closest('#lb')) lb.removeAttribute('data-open');

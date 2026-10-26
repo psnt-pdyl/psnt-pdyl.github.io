@@ -1,5 +1,8 @@
 ---
 // One figure: an image (click to zoom), a looping video, or a dashed placeholder. The caption is the slot.
+// Images come from src/assets/img and are resized by Astro; videos are served from public/img.
+import { getImage, Image } from 'astro:assets';
+import { image } from '../lib/images';
 import { withBase } from '../lib/url';
 
 interface Props {
@@ -17,6 +20,10 @@ interface Props {
 
 const { src, alt, photo, cert, video, poster, label, placeholder } = Astro.props;
 const frame = 'block w-full rounded-lg border border-line bg-white';
+const img = src ? image(src) : undefined;
+// The lightbox shows the full-size image rather than the thumbnail-sized one in the figure.
+const full = img && (await getImage({ src: img })).src;
+const posterSrc = poster && (await getImage({ src: image(poster) })).src;
 ---
 
 <figure>
@@ -24,7 +31,7 @@ const frame = 'block w-full rounded-lg border border-line bg-white';
 		video ? (
 			<video
 				src={withBase(video)}
-				poster={poster && withBase(poster)}
+				poster={posterSrc}
 				muted
 				loop
 				playsinline
@@ -39,10 +46,14 @@ const frame = 'block w-full rounded-lg border border-line bg-white';
 				{placeholder}
 			</div>
 		) : (
-			<img
-				src={src && withBase(src)}
-				alt={alt}
+			img && (
+			<Image
+				src={img}
+				alt={alt ?? ''}
+				widths={[480, 960]}
+				sizes="(min-width: 901px) 560px, 100vw"
 				loading="lazy"
+				data-full={full}
 				class:list={[
 					frame,
 					'cursor-zoom-in',
@@ -50,6 +61,7 @@ const frame = 'block w-full rounded-lg border border-line bg-white';
 					photo ? 'object-cover' : 'object-contain',
 				]}
 			/>
+			)
 		)
 	}
 	<figcaption class="mt-[7px] font-sans text-[13px]/[1.45] text-muted [&_b]:font-semibold [&_b]:text-ink">

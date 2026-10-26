@@ -1,8 +1,9 @@
 ---
 // "Project N" pill that opens the project pop-up. On hover or keyboard focus a small preview card
 // shows the project's cover as a fixed square thumbnail (left) and its title (right, up to three lines, then an ellipsis).
+import { Image } from 'astro:assets';
 import { PROJECTS, projectName } from '../data/portfolio';
-import { withBase } from '../lib/url';
+import { image } from '../lib/images';
 import Lnk from './Lnk.astro';
 
 interface Props {
@@ -22,9 +23,12 @@ const p = PROJECTS.find((x) => x.id === id)!;
 	>
 		{
 			p.cover ? (
-				<img
-					src={withBase(p.cover)}
+				<Image
+					src={image(p.cover)}
 					alt=""
+					width={96}
+					height={96}
+					fit="cover"
 					loading="lazy"
 					class="size-12 flex-none rounded-sm border border-line bg-white object-cover"
 				/>

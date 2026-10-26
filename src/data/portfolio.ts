@@ -1,6 +1,6 @@
 // All portfolio content. Each project's `skills` list drives its chips, the skill filter and the skills matrix.
 //
-// HOW TO ADD A FIGURE: put the image in public/img/ and replace a placeholder figure
+// HOW TO ADD A FIGURE: put the image in src/assets/img/ and replace a placeholder figure
 //   { placeholder: 'Converted electric jeep', caption: '...' }
 // with
 //   { src: 'img/your-file.png', alt: 'short description', caption: '...' }

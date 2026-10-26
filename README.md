@@ -18,9 +18,10 @@ bun run build    # static site in dist/
 | `src/components/` | Sidebar, project tile and pop-up, skills matrix, figure, certificate, CV rows, theme toggle |
 | `src/scripts/portfolio.ts` | Tabs (and their URLs), skill filter, project pop-up, lightbox, active sidebar link |
 | `src/styles/global.css` | Tailwind import, colour tokens (light/dark), fonts and breakpoints |
-| `public/` | Images, videos, paper PDFs and the CV, served at the same paths as before |
+| `src/assets/img/` | Images, resized and converted to WebP at build time by Astro's `<Image>` |
+| `public/` | Videos, paper PDFs and the CV, served as-is |
 
-To add a project figure, put the file in `public/img/` and replace a `{ placeholder: ... }` entry in
+To add a project figure, put the file in `src/assets/img/` and replace a `{ placeholder: ... }` entry in
 `src/data/portfolio.ts` with `{ src: 'img/file.png', alt: '...', caption: '...' }`.
 A project's `skills` list drives its chips, the skill filter and the skills matrix.
 

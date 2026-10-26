@@ -1,5 +1,5 @@
 ---
-import { Download, Mail } from '@lucide/astro';
+import { FileText, Mail } from '@lucide/astro';
 import { linkAttrs } from '../lib/url';
 import GithubIcon from './GithubIcon.astro';
 import ThemeToggle from './ThemeToggle.astro';
@@ -48,15 +48,14 @@ const button = 'inline-flex h-[30px] items-center rounded-md border no-underline
 	<div class:list={[full, 'mb-[22px] flex items-center gap-2']}>
 		<a
 			{...linkAttrs('CV_Prashant.pdf')}
-			download="Prashant_Paudyal_Sharma_CV.pdf"
 			class:list={[
 				button,
 				// Inverted colours: dark on the light theme, light on the dark theme.
 				'gap-1.5 border-ink bg-ink px-2.5 text-[12.5px]/[normal] font-medium text-bg hover:opacity-85',
 			]}
 		>
-			<Download size={14} aria-hidden="true" />
-			Download CV
+			<FileText size={14} aria-hidden="true" />
+			View CV
 		</a>
 		<a
 			{...linkAttrs(`https://github.com/${github}`)}

@@ -14,6 +14,7 @@ export const SKILLS: [group: string, skills: [key: string, label: string][]][] =
 		['pinn', 'Physics-informed ML'],
 		['gnn', 'Graph neural networks'],
 		['vision', 'Computer vision'],
+		['xai', 'Explainable AI (attention, Grad-CAM)'],
 		['forecast', 'Load forecasting'],
 		['scenario', 'Scenario modelling'],
 		['evmodel', 'EV energy modelling'],
@@ -148,6 +149,31 @@ export const PROJECTS: Project[] = [
 	{
 		id: 'p3',
 		cat: 'professional',
+		title: 'Explainable visuomotor control for a small two-joint robot arm',
+		meta: 'Robotics & machine learning · NAST Innovation Program · 2025 · team project, before the larger arm in Project 4',
+		description:
+			'A small 2-DOF arm on a Raspberry Pi 4, filmed by a wrist Pi Camera and a fixed webcam, learns to predict its next joint angles from images. A frozen ResNet-18 encodes both views, YOLOv8n finds the ball, and a 4-layer LSTM decodes the motion. A cross-attention layer in which the motor state queries the visual features shows where in the image each prediction looked: on the gripper and the ball, where the plain ResNet-LSTM spread its focus over the background.',
+		cover: 'img/arm2dof-setup.jpg',
+		fit: 'cover',
+		skills: ['vision', 'xai', 'lstm', 'python'],
+		figures: [
+			{ src: 'img/arm2dof-setup.jpg', photo: true, alt: 'Small robot arm on a table with a ball, a target zone, a webcam, a wrist camera and a Raspberry Pi 4, joint angles marked', caption: 'Setup: 2-DOF arm, wrist Pi Camera and webcam, Raspberry Pi 4, ball and target.' },
+			{ src: 'img/arm2dof-pipeline.jpg', alt: 'Pipeline: Pi Camera and webcam images through frozen ResNets, ball coordinates and motor angles through encoders, fused by multi-head cross-attention into an LSTM and output head', caption: 'Pipeline: two camera views, ball position and motor state fused by cross-attention before the LSTM.' },
+			{ src: 'img/arm2dof-cross-attention.jpg', alt: 'Cross-attention block: fused image and ball features as key and value, motor embedding as query', caption: 'Cross-attention: the motor state is the query; image and ball features are keys and values.' },
+			{ src: 'img/arm2dof-yolo.jpg', photo: true, alt: 'Camera frame of the arm with a detected red ball in a bounding box', caption: 'YOLOv8n ball detection (mAP@0.5 = 0.992).' },
+			{ src: 'img/arm2dof-feature-importance.jpg', alt: 'Five frames with baseline ResNet feature maps spread over the image and cross-attention maps concentrated on the arm and ball', caption: 'Five frames: baseline features spread over the background (middle); cross-attention concentrates on the arm and ball (bottom).' },
+			{ src: 'img/arm2dof-gradcam.jpg', alt: 'Grad-CAM maps for three frames, baseline versus cross-attention', caption: 'Grad-CAM: the cross-attention model focuses on the gripper and ball.' },
+		],
+		results: [
+			{ value: 'MAE &lt; 0.03', label: 'on every joint, with cross-attention added' },
+			{ value: 'R<sup>2</sup> 0.98–0.99', label: 'on joints 1 and 3 (joint 2: 0.92)' },
+			{ value: '0.992', label: 'mAP@0.5 of the YOLOv8n ball detector' },
+		],
+		links: [{ label: 'Preprint (TechRxiv, 2025)', href: '#pub6' }],
+	},
+	{
+		id: 'p4',
+		cat: 'professional',
 		title: 'Robot arm cells driven by graph and physics-informed networks',
 		meta: 'Robotics & machine learning · 2025–2026',
 		description:
@@ -171,7 +197,7 @@ export const PROJECTS: Project[] = [
 		],
 	},
 	{
-		id: 'p4',
+		id: 'p5',
 		cat: 'professional',
 		title: "Multivariate LSTM for Nepal's net-zero demand and generation gap",
 		meta: 'NAST · 2025 · with R. Pandey',
@@ -197,7 +223,7 @@ export const PROJECTS: Project[] = [
 		],
 	},
 	{
-		id: 'p5',
+		id: 'p6',
 		cat: 'professional',
 		title: 'Petrol-to-electric jeep conversion',
 		meta: 'Nepal Academy of Science and Technology · 2024–2025',
@@ -210,7 +236,7 @@ export const PROJECTS: Project[] = [
 		links: [{ label: 'News / NAST report' }],
 	},
 	{
-		id: 'p6',
+		id: 'p7',
 		cat: 'professional',
 		title: 'Integrated turbine-pump systems',
 		meta: 'Mechanical Engineer, aQysta · 2023–2024',
@@ -224,7 +250,7 @@ export const PROJECTS: Project[] = [
 		links: [{ label: 'Company / project page' }],
 	},
 	{
-		id: 'p7',
+		id: 'p8',
 		cat: 'professional',
 		title: 'Complete HVAC design for a hotel',
 		meta: 'HVAC Design Intern, C-Zone HVAC · 2022',
@@ -240,7 +266,7 @@ export const PROJECTS: Project[] = [
 		links: [{ label: 'Internship certificate' }],
 	},
 	{
-		id: 'p8',
+		id: 'p9',
 		cat: 'other',
 		title: 'Energy consumption and driving range of electric vehicles',
 		meta: 'With Dr. Bishal Silwal, Kathmandu University · 2023–2024',
@@ -257,7 +283,7 @@ export const PROJECTS: Project[] = [
 		links: [{ label: 'IEEE Xplore (DOI)', href: 'https://doi.org/10.1109/SEFET61574.2024.10718266' }],
 	},
 	{
-		id: 'p9',
+		id: 'p10',
 		cat: 'other',
 		title: 'Electrified vs diesel-powered tractor',
 		meta: 'Collaborative study · 2024',
@@ -273,7 +299,7 @@ export const PROJECTS: Project[] = [
 		links: [{ label: 'Journal article', href: 'https://li01.tci-thaijo.org/index.php/TSAEJ/article/view/262801' }],
 	},
 	{
-		id: 'p10',
+		id: 'p11',
 		cat: 'other',
 		title: 'Solar-powered vending cart and e-cargo kart',
 		meta: 'Product design · 2024',
@@ -289,7 +315,7 @@ export const PROJECTS: Project[] = [
 		],
 	},
 	{
-		id: 'p11',
+		id: 'p12',
 		cat: 'other',
 		title: 'EV charging station layout',
 		meta: 'Design study · 2024',
@@ -314,6 +340,8 @@ export interface Publication {
 	/** Text after the venue, e.g. ", 2026." */
 	rest: string;
 	accepted?: boolean;
+	/** Not peer reviewed, e.g. TechRxiv. */
+	preprint?: boolean;
 	/** Related project id, shown first as a "Project N" pill with a hover preview. */
 	project?: string;
 	links: Link[];
@@ -333,13 +361,25 @@ export const PUBLICATIONS: Publication[] = [
 		],
 	},
 	{
+		id: 'pub6',
+		authors: 'B. Chand, S. Gaire, <b>P. Paudyal</b>, K. Rasaili, R. Pandey and I. Bajracharya.',
+		title: 'Cross-attention for explainable visuomotor prediction in robotic manipulation.',
+		venue: 'TechRxiv',
+		rest: ', December 2025.',
+		preprint: true,
+		project: 'p3',
+		links: [
+			{ label: 'doi:10.36227/techrxiv.176704503.34542562/v1', href: 'https://doi.org/10.36227/techrxiv.176704503.34542562/v1' },
+		],
+	},
+	{
 		id: 'pub2',
 		authors: 'R. Pandey and <b>P. P. Sharma</b>.',
 		title: 'Electrification and net-zero transition in Nepal: bridging the gap between demand and generation using multivariate LSTM.',
 		venue: 'Int. Conf. on Energy Efficiency, Conservation and Transition for Achieving Net Zero and SDGs',
 		rest: ', Kerala, India, 2025.',
 		accepted: true,
-		project: 'p4',
+		project: 'p5',
 		links: [
 			{ label: 'Paper PDF', href: 'papers/Pandey_Sharma_2025_net_zero_Nepal.pdf' },
 		],
@@ -361,7 +401,7 @@ export const PUBLICATIONS: Publication[] = [
 		title: 'Comparative analysis of energy consumption and driving range of electric vehicles.',
 		venue: 'IEEE 4th Int. Conf. on Sustainable Energy and Future Electric Transportation (SEFET)',
 		rest: ', Hyderabad, 2024, pp. 1–6.',
-		project: 'p8',
+		project: 'p9',
 		links: [
 			{ label: 'doi:10.1109/SEFET61574.2024.10718266', href: 'https://doi.org/10.1109/SEFET61574.2024.10718266' },
 		],
@@ -372,7 +412,7 @@ export const PUBLICATIONS: Publication[] = [
 		title: 'Comparative analysis between electrified tractor and diesel-powered tractor.',
 		venue: 'Journal of the Thai Society of Agricultural Engineering',
 		rest: ', 30(1), 37–41, 2024.',
-		project: 'p9',
+		project: 'p10',
 		links: [
 			{ label: 'Read article', href: 'https://li01.tci-thaijo.org/index.php/TSAEJ/article/view/262801' },
 		],

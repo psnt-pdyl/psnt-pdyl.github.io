@@ -20,14 +20,6 @@ import { CATS, CERTIFICATES, PROJECTS, PUBLICATIONS, type CatKey } from '../data
 import { lead, row, small } from '../styles/ui';
 import { linkAttrs } from '../lib/url';
 
-const interests = [
-	'Electricity demand forecasting',
-	'Physics-informed ML',
-	'Power-system planning',
-	'Energy storage',
-	'Energy transition & policy',
-];
-
 interface Props {
 	/** Project tab to select. Set on the /projects routes; the home page defaults to Academic. */
 	cat?: CatKey | 'all';
@@ -62,28 +54,6 @@ const listed = CERTIFICATES.filter((c) => !c.src);
 			<Sidebar />
 
 			<main class="min-w-0 pt-6 pb-20 lg:pt-12">
-				<Section id="about" title="About">
-					<p>
-						I build physics-informed deep-learning models for national electricity demand. My M.Sc. thesis forecast
-						how electric cooking and electric vehicles will change Nepal's <em>hourly</em> grid load, and showed that
-						the grid will face many evenings close to its limit rather than one rare extreme. Before research I worked
-						as a mechanical engineer, designing and installing turbine-pump systems in the field.
-					</p>
-					<p>
-						Next, I want to move from predicting the evening peak to deciding how a power system should meet it:
-						optimal power-system planning, energy storage and value stacking.
-					</p>
-					<div class="mt-1 flex flex-wrap gap-2">
-						{
-							interests.map((s) => (
-								<span class="rounded-md bg-accent-soft px-2.5 py-1 font-sans text-[13px]/[normal] font-medium text-accent">
-									{s}
-								</span>
-							))
-						}
-					</div>
-				</Section>
-
 				<Section id="education" title="Education">
 					<Cv>
 						<CvItem when="2024 – 2026">
@@ -120,9 +90,10 @@ const listed = CERTIFICATES.filter((c) => !c.src);
 							<b>Innovative Assistant Researcher</b>, Nepal Academy of Science and Technology (NAST), Government of Nepal
 							<small class={small}>
 								Physics-informed deep-learning pipeline for national grid load forecasting on Load Dispatch Center data;
-								net-zero demand–generation study; petrol-to-electric jeep conversion
+								explainable visuomotor learning for a small robot arm; net-zero demand–generation study;
+								petrol-to-electric jeep conversion
 							</small>
-							<ProjectLinks ids={['p1', 'p4', 'p5']} />
+							<ProjectLinks ids={['p1', 'p3', 'p5', 'p6']} />
 						</CvItem>
 						<CvItem when="Sep 2023 – May 2024">
 							<b>Mechanical Engineer</b>, aQysta
@@ -130,24 +101,24 @@ const listed = CERTIFICATES.filter((c) => !c.src);
 								Integrated turbine-pump systems from 2D/3D design through manufacture and on-site installation; R&amp;D
 								on a higher-power version
 							</small>
-							<ProjectLinks ids={['p6']} />
+							<ProjectLinks ids={['p7']} />
 						</CvItem>
 						<CvItem when="Apr – Jun 2022">
 							<b>HVAC Design Intern</b>, C-Zone HVAC Inc.
 							<small class={small}>
 								Complete hotel HVAC design, from load calculation to ASHRAE equipment selection and AutoCAD layouts
 							</small>
-							<ProjectLinks ids={['p7']} />
+							<ProjectLinks ids={['p8']} />
 						</CvItem>
 					</Cv>
 				</Section>
 
-				<Section id="publications" title="Publications" lead="Five peer-reviewed works.">
+				<Section id="publications" title="Publications" lead="Five peer-reviewed works and one preprint.">
 					<ol class="m-0 list-decimal pl-[22px]">
 						{
 							PUBLICATIONS.map((pub) => (
 								<li id={pub.id} class="mb-4 pl-1.5">
-									<Fragment set:html={pub.authors} />{' '}<span class="font-semibold">{pub.title}</span>{' '}<span class="text-muted italic">{pub.venue}</span>{pub.rest}{pub.accepted && <>{' '}<span class="ml-1 rounded-[5px] bg-ok-soft px-2 py-0.5 font-sans text-[11.5px]/[normal] font-medium whitespace-nowrap text-ok">accepted</span></>}
+									<Fragment set:html={pub.authors} />{' '}<span class="font-semibold">{pub.title}</span>{' '}<span class="text-muted italic">{pub.venue}</span>{pub.rest}{pub.accepted && <>{' '}<span class="ml-1 rounded-[5px] bg-ok-soft px-2 py-0.5 font-sans text-[11.5px]/[normal] font-medium whitespace-nowrap text-ok">accepted</span></>}{pub.preprint && <>{' '}<span class="ml-1 rounded-[5px] bg-accent-soft px-2 py-0.5 font-sans text-[11.5px]/[normal] font-medium whitespace-nowrap text-accent">preprint</span></>}
 									<div class:list={[row, 'mt-1.5']}>
 										{pub.project && <ProjectLink id={pub.project} />}
 										{pub.links.map((l) => (

@@ -1,11 +1,10 @@
 ---
-import { FileText, Mail } from '@lucide/astro';
+import { Mail } from '@lucide/astro';
 import { linkAttrs } from '../lib/url';
 import GithubIcon from './GithubIcon.astro';
 import ThemeToggle from './ThemeToggle.astro';
 
 const toc = [
-	['about', 'About'],
 	['education', 'Education'],
 	['experience', 'Experience'],
 	['publications', 'Publications'],
@@ -31,12 +30,11 @@ const button = 'inline-flex h-[30px] items-center rounded-md border no-underline
 		PS
 	</div>
 	<h1 class="mt-0 mb-1.5 font-serif text-[26px]/[1.2] font-bold">Prashant Paudyal Sharma</h1>
-	<p class="mt-0 mb-1 font-medium">Energy Systems &amp; AI-for-Energy Researcher</p>
 	<p class="mt-0 mb-[18px] text-muted">
 		M.Sc. Renewable Energy Engineering<br />Pulchowk Campus, Tribhuvan University<br />Lalitpur, Nepal
 	</p>
 	<span class:list={[full, 'mb-5 inline-block rounded-md bg-ok-soft px-2.5 py-1 text-[12.5px] font-medium text-ok']}>
-		Seeking PhD positions, 2027
+		Seeking PhD position, 2027
 	</span>
 	<a
 		{...linkAttrs(`mailto:${email}`)}
@@ -46,17 +44,6 @@ const button = 'inline-flex h-[30px] items-center rounded-md border no-underline
 		{email}
 	</a>
 	<div class:list={[full, 'mb-[22px] flex items-center gap-2']}>
-		<a
-			{...linkAttrs('CV_Prashant.pdf')}
-			class:list={[
-				button,
-				// Inverted colours: dark on the light theme, light on the dark theme.
-				'gap-1.5 border-ink bg-ink px-2.5 text-[12.5px]/[normal] font-medium text-bg hover:opacity-85',
-			]}
-		>
-			<FileText size={14} aria-hidden="true" />
-			View CV
-		</a>
 		<a
 			{...linkAttrs(`https://github.com/${github}`)}
 			aria-label={`GitHub: ${github}`}
